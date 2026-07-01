@@ -8,7 +8,7 @@ Dual oscillators, ADSR envelopes, a resonant multi-mode filter, studio effects,
 a modulation LFO and a live oscilloscope — built entirely on the Web Audio API.
 No plug-ins. No install. Just press a key.
 
-[**Launch the Studio →**](https://synthwave-studio.vercel.app/synth.html) · [Landing page](https://synthwave-studio.vercel.app)
+[**Launch the Studio →**](https://synthwave-studio-amber.vercel.app/synth.html) · [Landing page](https://synthwave-studio-amber.vercel.app)
 
 ![Web Audio API](https://img.shields.io/badge/Web%20Audio%20API-native-00e5ff)
 ![Vanilla JS](https://img.shields.io/badge/JavaScript-ES%20Modules-f7df1e?logo=javascript&logoColor=black)
