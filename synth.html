@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynthWave — Browser Synthesizer & Oscilloscope</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/knobs.css">
+    <link rel="stylesheet" href="css/piano.css">
+    <link rel="stylesheet" href="css/oscilloscope.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Startup overlay — Web Audio requires user gesture -->
+    <div id="startup-overlay">
+        <div class="startup-content">
+            <h1 class="startup-title">SynthWave</h1>
+            <p class="startup-subtitle">Browser-Based Synthesizer & Oscilloscope</p>
+            <button id="start-btn" class="start-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 5v14l11-7z" fill="currentColor"/>
+                </svg>
+                <span>Initialize Audio Engine</span>
+            </button>
+            <p class="startup-hint">Click to start — requires user interaction for Web Audio API</p>
+        </div>
+    </div>
+
+    <!-- Main Synthesizer Interface -->
+    <div id="synth-app" class="hidden">
+        <!-- Header -->
+        <header class="synth-header">
+            <div class="header-left">
+                <a class="logo" href="/" title="Back to home">SynthWave</a>
+                <span class="version">v1.0</span>
+            </div>
+            <div class="header-center">
+                <div class="preset-selector">
+                    <label>Preset</label>
+                    <select id="preset-select">
+                        <option value="init">Init</option>
+                        <option value="warm-pad">Warm Pad</option>
+                        <option value="bass-pluck">Bass Pluck</option>
+                        <option value="lead-saw">Lead Saw</option>
+                        <option value="organ">Organ</option>
+                        <option value="bell">Bell</option>
+                        <option value="string-ensemble">String Ensemble</option>
+                        <option value="wobble-bass">Wobble Bass</option>
+                    </select>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="master-volume">
+                    <label>Master</label>
+                    <div id="master-volume-knob" class="knob-container" data-param="masterVolume" data-min="0" data-max="1" data-value="0.7" data-label="Vol"></div>
+                </div>
+                <div class="cpu-meter">
+                    <span class="cpu-label">CPU</span>
+                    <div class="cpu-bar"><div id="cpu-fill" class="cpu-fill"></div></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Oscilloscope Section -->
+        <section class="oscilloscope-section">
+            <div class="section-label">Oscilloscope</div>
+            <div class="oscilloscope-wrapper">
+                <canvas id="oscilloscope-canvas"></canvas>
+                <div class="oscilloscope-controls">
+                    <button id="scope-mode-wave" class="scope-btn active" data-mode="waveform">Wave</button>
+                    <button id="scope-mode-freq" class="scope-btn" data-mode="frequency">Freq</button>
+                    <button id="scope-mode-lissajous" class="scope-btn" data-mode="lissajous">Lissajous</button>
+                    <div class="scope-control">
+                        <label>Zoom</label>
+                        <input type="range" id="scope-zoom" min="1" max="8" step="0.1" value="1">
+                    </div>
+                    <div class="scope-control">
+                        <label>Glow</label>
+                        <input type="range" id="scope-glow" min="0" max="20" step="1" value="8">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Synth Engine Section -->
+        <section class="synth-engine-section">
+            <!-- Oscillator Panel -->
+            <div class="panel oscillator-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Oscillators</span>
+                </div>
+                <div class="oscillator-group">
+                    <!-- Oscillator 1 -->
+                    <div class="oscillator-unit" id="osc1-unit">
+                        <div class="osc-header">
+                            <span class="osc-label">OSC 1</span>
+                            <button class="osc-toggle active" id="osc1-toggle" data-osc="1">ON</button>
+                        </div>
+                        <div class="waveform-selector" id="osc1-waveform">
+                            <button class="wave-btn active" data-wave="sine" title="Sine">
+                                <svg viewBox="0 0 40 20"><path d="M0 10 Q10 0 20 10 Q30 20 40 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                            <button class="wave-btn" data-wave="triangle" title="Triangle">
+                                <svg viewBox="0 0 40 20"><path d="M0 10 L10 0 L20 10 L30 20 L40 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                            <button class="wave-btn" data-wave="sawtooth" title="Sawtooth">
+                                <svg viewBox="0 0 40 20"><path d="M0 20 L20 0 L20 20 L40 0 L40 20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                            <button class="wave-btn" data-wave="square" title="Square">
+                                <svg viewBox="0 0 40 20"><path d="M0 20 L0 0 L20 0 L20 20 L40 20 L40 0" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                        </div>
+                        <div class="osc-knobs">
+                            <div class="knob-container" data-param="osc1Detune" data-min="-100" data-max="100" data-value="0" data-label="Detune"></div>
+                            <div class="knob-container" data-param="osc1Octave" data-min="-2" data-max="2" data-value="0" data-label="Octave" data-step="1"></div>
+                            <div class="knob-container" data-param="osc1Gain" data-min="0" data-max="1" data-value="0.8" data-label="Level"></div>
+                        </div>
+                    </div>
+                    <!-- Oscillator 2 -->
+                    <div class="oscillator-unit" id="osc2-unit">
+                        <div class="osc-header">
+                            <span class="osc-label">OSC 2</span>
+                            <button class="osc-toggle" id="osc2-toggle" data-osc="2">OFF</button>
+                        </div>
+                        <div class="waveform-selector" id="osc2-waveform">
+                            <button class="wave-btn active" data-wave="sine" title="Sine">
+                                <svg viewBox="0 0 40 20"><path d="M0 10 Q10 0 20 10 Q30 20 40 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                            <button class="wave-btn" data-wave="triangle" title="Triangle">
+                                <svg viewBox="0 0 40 20"><path d="M0 10 L10 0 L20 10 L30 20 L40 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                            <button class="wave-btn" data-wave="sawtooth" title="Sawtooth">
+                                <svg viewBox="0 0 40 20"><path d="M0 20 L20 0 L20 20 L40 0 L40 20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                            <button class="wave-btn" data-wave="square" title="Square">
+                                <svg viewBox="0 0 40 20"><path d="M0 20 L0 0 L20 0 L20 20 L40 20 L40 0" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                        </div>
+                        <div class="osc-knobs">
+                            <div class="knob-container" data-param="osc2Detune" data-min="-100" data-max="100" data-value="0" data-label="Detune"></div>
+                            <div class="knob-container" data-param="osc2Octave" data-min="-2" data-max="2" data-value="0" data-label="Octave" data-step="1"></div>
+                            <div class="knob-container" data-param="osc2Gain" data-min="0" data-max="1" data-value="0.5" data-label="Level"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADSR Envelope Panel -->
+            <div class="panel adsr-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Amp Envelope</span>
+                </div>
+                <div class="adsr-visualization">
+                    <canvas id="adsr-canvas" width="280" height="120"></canvas>
+                </div>
+                <div class="adsr-knobs">
+                    <div class="knob-container" data-param="attack" data-min="0.001" data-max="2" data-value="0.01" data-label="Attack"></div>
+                    <div class="knob-container" data-param="decay" data-min="0.001" data-max="2" data-value="0.2" data-label="Decay"></div>
+                    <div class="knob-container" data-param="sustain" data-min="0" data-max="1" data-value="0.7" data-label="Sustain"></div>
+                    <div class="knob-container" data-param="release" data-min="0.001" data-max="3" data-value="0.3" data-label="Release"></div>
+                </div>
+            </div>
+
+            <!-- Filter Panel -->
+            <div class="panel filter-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Filter</span>
+                    <button class="filter-toggle active" id="filter-toggle">ON</button>
+                </div>
+                <div class="filter-type-selector" id="filter-type-selector">
+                    <button class="filter-btn active" data-type="lowpass">LP</button>
+                    <button class="filter-btn" data-type="highpass">HP</button>
+                    <button class="filter-btn" data-type="bandpass">BP</button>
+                    <button class="filter-btn" data-type="notch">Notch</button>
+                </div>
+                <div class="filter-knobs">
+                    <div class="knob-container" data-param="filterCutoff" data-min="20" data-max="20000" data-value="8000" data-label="Cutoff" data-log="true"></div>
+                    <div class="knob-container" data-param="filterResonance" data-min="0" data-max="25" data-value="1" data-label="Reso"></div>
+                    <div class="knob-container" data-param="filterEnvAmount" data-min="0" data-max="1" data-value="0" data-label="Env"></div>
+                </div>
+                <!-- Filter Envelope -->
+                <div class="panel-subheader">
+                    <span>Filter Envelope</span>
+                </div>
+                <div class="filter-env-knobs">
+                    <div class="knob-container small" data-param="filterAttack" data-min="0.001" data-max="2" data-value="0.01" data-label="A"></div>
+                    <div class="knob-container small" data-param="filterDecay" data-min="0.001" data-max="2" data-value="0.3" data-label="D"></div>
+                    <div class="knob-container small" data-param="filterSustain" data-min="0" data-max="1" data-value="0.5" data-label="S"></div>
+                    <div class="knob-container small" data-param="filterRelease" data-min="0.001" data-max="3" data-value="0.3" data-label="R"></div>
+                </div>
+            </div>
+
+            <!-- Effects Panel -->
+            <div class="panel effects-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Effects</span>
+                </div>
+                <!-- Reverb -->
+                <div class="effect-unit">
+                    <div class="effect-header">
+                        <span>Reverb</span>
+                        <button class="effect-toggle active" id="reverb-toggle">ON</button>
+                    </div>
+                    <div class="effect-knobs">
+                        <div class="knob-container small" data-param="reverbMix" data-min="0" data-max="1" data-value="0.2" data-label="Mix"></div>
+                        <div class="knob-container small" data-param="reverbDecay" data-min="0.1" data-max="8" data-value="2.5" data-label="Decay"></div>
+                    </div>
+                </div>
+                <!-- Delay -->
+                <div class="effect-unit">
+                    <div class="effect-header">
+                        <span>Delay</span>
+                        <button class="effect-toggle" id="delay-toggle">OFF</button>
+                    </div>
+                    <div class="effect-knobs">
+                        <div class="knob-container small" data-param="delayTime" data-min="0.05" data-max="1" data-value="0.3" data-label="Time"></div>
+                        <div class="knob-container small" data-param="delayFeedback" data-min="0" data-max="0.9" data-value="0.4" data-label="Fdbk"></div>
+                        <div class="knob-container small" data-param="delayMix" data-min="0" data-max="1" data-value="0.2" data-label="Mix"></div>
+                    </div>
+                </div>
+                <!-- Chorus -->
+                <div class="effect-unit">
+                    <div class="effect-header">
+                        <span>Chorus</span>
+                        <button class="effect-toggle" id="chorus-toggle">OFF</button>
+                    </div>
+                    <div class="effect-knobs">
+                        <div class="knob-container small" data-param="chorusRate" data-min="0.1" data-max="8" data-value="1.5" data-label="Rate"></div>
+                        <div class="knob-container small" data-param="chorusDepth" data-min="0" data-max="1" data-value="0.5" data-label="Depth"></div>
+                        <div class="knob-container small" data-param="chorusMix" data-min="0" data-max="1" data-value="0.3" data-label="Mix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LFO Panel -->
+            <div class="panel lfo-panel">
+                <div class="panel-header">
+                    <span class="panel-title">LFO</span>
+                    <button class="lfo-toggle" id="lfo-toggle">OFF</button>
+                </div>
+                <div class="lfo-waveform-selector" id="lfo-waveform">
+                    <button class="wave-btn active" data-wave="sine" title="Sine">
+                        <svg viewBox="0 0 40 20"><path d="M0 10 Q10 0 20 10 Q30 20 40 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    </button>
+                    <button class="wave-btn" data-wave="triangle" title="Triangle">
+                        <svg viewBox="0 0 40 20"><path d="M0 10 L10 0 L20 10 L30 20 L40 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    </button>
+                    <button class="wave-btn" data-wave="sawtooth" title="Sawtooth">
+                        <svg viewBox="0 0 40 20"><path d="M0 20 L20 0 L20 20 L40 0 L40 20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    </button>
+                    <button class="wave-btn" data-wave="square" title="Square">
+                        <svg viewBox="0 0 40 20"><path d="M0 20 L0 0 L20 0 L20 20 L40 20 L40 0" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    </button>
+                </div>
+                <div class="lfo-destination">
+                    <label>Destination</label>
+                    <select id="lfo-destination">
+                        <option value="pitch">Pitch (Vibrato)</option>
+                        <option value="filter">Filter Cutoff</option>
+                        <option value="amplitude">Amplitude (Tremolo)</option>
+                        <option value="panning">Pan</option>
+                    </select>
+                </div>
+                <div class="lfo-knobs">
+                    <div class="knob-container small" data-param="lfoRate" data-min="0.1" data-max="20" data-value="5" data-label="Rate"></div>
+                    <div class="knob-container small" data-param="lfoDepth" data-min="0" data-max="1" data-value="0.5" data-label="Depth"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Piano Keyboard Section -->
+        <section class="piano-section">
+            <div class="piano-controls">
+                <div class="octave-control">
+                    <button id="octave-down" class="octave-btn">&#9668;</button>
+                    <span id="octave-display">C4</span>
+                    <button id="octave-up" class="octave-btn">&#9658;</button>
+                </div>
+                <div class="keyboard-info">
+                    <span class="key-hint">Keys: A-L (white) W-P (black) | Z/X octave shift</span>
+                </div>
+                <div class="polyphony-display">
+                    <span>Voices: </span><span id="voice-count">0</span><span>/16</span>
+                </div>
+            </div>
+            <div id="piano-keyboard" class="piano-keyboard"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="synth-footer">
+            <span>SynthWave — Built with Web Audio API, Canvas, and SVG</span>
+        </footer>
+    </div>
+
+    <!-- Scripts (ES Modules) -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

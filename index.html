@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SynthWave — A Browser-Native Polyphonic Synthesizer</title>
+  <meta name="description" content="SynthWave is a full analog-style subtractive synthesizer built on the Web Audio API. Dual oscillators, ADSR envelopes, resonant filters, reverb, delay, chorus, an LFO and a real-time oscilloscope — all in your browser." />
+  <meta name="theme-color" content="#0a0a0f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SynthWave — A Browser-Native Polyphonic Synthesizer" />
+  <meta property="og:description" content="Dual oscillators, envelopes, filters, effects, an LFO and a real-time oscilloscope. Zero install, pure Web Audio." />
+  <meta property="og:image" content="/media/hero.jpg" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body class="landing">
+  <!-- Nav -->
+  <nav class="lnav" id="lnav">
+    <a class="lnav__brand" href="/">SynthWave</a>
+    <div class="lnav__links">
+      <a href="#features">Features</a>
+      <a href="#engine">Engine</a>
+      <a href="#presets">Presets</a>
+      <a class="lnav__cta" href="/synth.html">Launch Studio →</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="lhero">
+    <div class="lhero__bg" style="background-image:url('/media/hero.jpg')"></div>
+    <div class="lhero__scrim"></div>
+    <div class="lhero__grid"></div>
+    <canvas class="lhero__scope" id="hero-scope" aria-hidden="true"></canvas>
+
+    <div class="lhero__content">
+      <span class="lhero__eyebrow reveal">Web Audio · 16-voice polyphony · Real-time DSP</span>
+      <h1 class="lhero__title reveal">Sound design,<br /><span class="neon">in your browser.</span></h1>
+      <p class="lhero__lead reveal">
+        SynthWave is a complete subtractive synthesizer — dual oscillators, ADSR
+        envelopes, a resonant multi-mode filter, studio effects, a modulation LFO and
+        a live oscilloscope. No plug-ins, no install. Just press a key.
+      </p>
+      <div class="lhero__actions reveal">
+        <a class="lbtn lbtn--primary" href="/synth.html">Launch the Studio</a>
+        <a class="lbtn lbtn--ghost" href="#features">See what's inside</a>
+      </div>
+      <div class="lhero__stats reveal">
+        <div><b data-count="16">0</b><span>voices</span></div>
+        <div><b data-count="8">0</b><span>presets</span></div>
+        <div><b data-count="3">0</b><span>studio fx</span></div>
+      </div>
+    </div>
+    <a class="lhero__scroll" href="#features" aria-label="Scroll"><span></span></a>
+  </header>
+
+  <!-- Features -->
+  <section class="lsection" id="features">
+    <div class="lsection__head reveal">
+      <p class="lkicker">A full signal chain</p>
+      <h2>Everything a synth needs — nothing you don't.</h2>
+      <p class="lsub">Built directly on the Web Audio graph, every module is a real DSP
+        node routed and modulated in real time.</p>
+    </div>
+
+    <div class="lgrid">
+      <article class="lcard lcard--wide reveal">
+        <div class="lcard__media" style="background-image:url('/media/feature-synth.jpg')"></div>
+        <div class="lcard__body">
+          <h3>Dual-oscillator engine</h3>
+          <p>Two independent oscillators with sine, triangle, sawtooth and square waves,
+            per-oscillator detune, octave and level — the foundation of every great patch.</p>
+        </div>
+      </article>
+
+      <article class="lcard reveal">
+        <div class="lcard__icon">📈</div>
+        <h3>Live oscilloscope</h3>
+        <p>Waveform, spectrum and Lissajous modes with adjustable zoom and neon glow.</p>
+      </article>
+
+      <article class="lcard reveal">
+        <div class="lcard__icon">🎚️</div>
+        <h3>ADSR envelopes</h3>
+        <p>Separate amplitude and filter envelopes with a live, animated visualizer.</p>
+      </article>
+
+      <article class="lcard reveal">
+        <div class="lcard__icon">🌫️</div>
+        <h3>Resonant filter</h3>
+        <p>Low-pass, high-pass, band-pass and notch modes with envelope modulation.</p>
+      </article>
+
+      <article class="lcard lcard--wide reveal">
+        <div class="lcard__media card__media--sm" style="background-image:url('/media/feature-scope.jpg')"></div>
+        <div class="lcard__body">
+          <h3>Studio effects & modulation</h3>
+          <p>Convolution reverb, feedback delay and stereo chorus, plus an LFO you can
+            route to pitch, filter, amplitude or pan for vibrato, tremolo and wobble.</p>
+        </div>
+      </article>
+
+      <article class="lcard reveal">
+        <div class="lcard__icon">🎹</div>
+        <h3>Playable keyboard</h3>
+        <p>On-screen keys plus your computer keyboard, with octave shifting and a voice meter.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Engine band -->
+  <section class="lengine" id="engine">
+    <div class="lengine__inner reveal">
+      <p class="lkicker">Under the hood</p>
+      <h2>Real synthesis, real time.</h2>
+      <div class="lengine__grid">
+        <div><b>Web Audio</b><span>Native browser DSP graph, sample-accurate scheduling</span></div>
+        <div><b>Polyphony</b><span>16-voice manager with graceful voice stealing</span></div>
+        <div><b>Convolution</b><span>Procedurally generated impulse-response reverb</span></div>
+        <div><b>Envelopes</b><span>Precise ADSR ramps on amplitude and cutoff</span></div>
+        <div><b>Modulation</b><span>Global LFO with four routable destinations</span></div>
+        <div><b>Zero deps</b><span>Vanilla JS modules, Canvas and SVG only</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Presets showcase -->
+  <section class="lshowcase" id="presets">
+    <div class="lshowcase__media" style="background-image:url('/media/showcase.jpg')"></div>
+    <div class="lshowcase__scrim"></div>
+    <div class="lshowcase__content reveal">
+      <h2>Eight signature presets.<br />Then make your own.</h2>
+      <p>Warm Pad, Bass Pluck, Lead Saw, Organ, Bell, String Ensemble, Wobble Bass —
+        load one, tweak a knob, and it's yours.</p>
+      <div class="lchips">
+        <span>Warm Pad</span><span>Bass Pluck</span><span>Lead Saw</span>
+        <span>Organ</span><span>Bell</span><span>Strings</span><span>Wobble Bass</span>
+      </div>
+      <a class="lbtn lbtn--primary" href="/synth.html">Open the Studio</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="lcta reveal">
+    <h2>Plug in your headphones.</h2>
+    <p>Best experienced loud. Launch the studio and start playing.</p>
+    <a class="lbtn lbtn--primary lbtn--lg" href="/synth.html">Launch SynthWave →</a>
+  </section>
+
+  <footer class="lfooter">
+    <div class="lfooter__brand">SynthWave</div>
+    <p class="lfooter__note">Built with the Web Audio API, Canvas &amp; SVG. Imagery via
+      <a href="https://unsplash.com?utm_source=synthwave&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.</p>
+    <p class="lfooter__copy">© <span id="year"></span> SynthWave. A browser-native synthesizer.</p>
+  </footer>
+
+  <script src="js/landing.js"></script>
+</body>
+</html>

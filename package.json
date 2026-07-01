@@ -1,0 +1,30 @@
+{
+  "name": "synthwave",
+  "version": "1.0.0",
+  "description": "SynthWave — a browser-native, 16-voice polyphonic subtractive synthesizer with dual oscillators, ADSR envelopes, a resonant filter, studio effects, an LFO and a real-time oscilloscope. Built on the Web Audio API.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Shahriar Ahmed",
+  "homepage": "https://github.com/shahriar-ahmed-seam/synthwave",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shahriar-ahmed-seam/synthwave.git"
+  },
+  "keywords": [
+    "web-audio-api",
+    "synthesizer",
+    "oscilloscope",
+    "music",
+    "audio",
+    "dsp",
+    "polyphonic",
+    "adsr",
+    "lfo",
+    "javascript"
+  ],
+  "scripts": {
+    "fetch:images": "node scripts/fetch-images.mjs",
+    "dev": "npx --yes serve -l 3000 .",
+    "start": "npx --yes serve -l 3000 ."
+  }
+}

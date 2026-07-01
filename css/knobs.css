@@ -1,0 +1,154 @@
+/* =========================================
+   SVG Rotary Knob Component Styles
+   ========================================= */
+
+.knob-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+}
+
+.knob-container .knob-svg {
+    width: 52px;
+    height: 52px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: filter var(--transition-fast);
+}
+
+.knob-container:hover .knob-svg {
+    filter: drop-shadow(0 2px 8px rgba(0, 229, 255, 0.3));
+}
+
+.knob-container.active .knob-svg {
+    filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.5));
+}
+
+.knob-container.small .knob-svg {
+    width: 40px;
+    height: 40px;
+}
+
+/* Track (background arc) */
+.knob-track {
+    fill: none;
+    stroke: var(--knob-track);
+    stroke-width: 4;
+    stroke-linecap: round;
+}
+
+/* Active fill arc */
+.knob-fill-arc {
+    fill: none;
+    stroke: var(--knob-fill);
+    stroke-width: 4;
+    stroke-linecap: round;
+    transition: stroke var(--transition-fast);
+}
+
+/* Center circle */
+.knob-body {
+    fill: var(--knob-bg);
+    stroke: var(--border-color);
+    stroke-width: 1;
+    transition: stroke var(--transition-fast);
+}
+
+.knob-container:hover .knob-body {
+    stroke: var(--border-glow);
+}
+
+.knob-container.active .knob-body {
+    stroke: var(--accent-cyan);
+}
+
+/* Indicator line */
+.knob-indicator {
+    stroke: var(--knob-indicator);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+/* Value tooltip */
+.knob-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    color: var(--text-primary);
+    text-align: center;
+    min-width: 40px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    height: 14px;
+    line-height: 14px;
+}
+
+.knob-container:hover .knob-value,
+.knob-container.active .knob-value {
+    opacity: 1;
+}
+
+/* Label */
+.knob-label {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.knob-container.small .knob-label {
+    font-size: 0.55rem;
+}
+
+/* Color variants for different sections */
+.filter-panel .knob-fill-arc {
+    stroke: var(--accent-orange);
+}
+
+.filter-panel .knob-container.active .knob-body {
+    stroke: var(--accent-orange);
+}
+
+.filter-panel .knob-container:hover .knob-svg {
+    filter: drop-shadow(0 2px 8px rgba(255, 107, 0, 0.3));
+}
+
+.adsr-panel .knob-fill-arc {
+    stroke: var(--accent-green);
+}
+
+.adsr-panel .knob-container.active .knob-body {
+    stroke: var(--accent-green);
+}
+
+.adsr-panel .knob-container:hover .knob-svg {
+    filter: drop-shadow(0 2px 8px rgba(57, 255, 20, 0.3));
+}
+
+.effects-panel .knob-fill-arc {
+    stroke: var(--accent-magenta);
+}
+
+.effects-panel .knob-container.active .knob-body {
+    stroke: var(--accent-magenta);
+}
+
+.effects-panel .knob-container:hover .knob-svg {
+    filter: drop-shadow(0 2px 8px rgba(255, 0, 229, 0.3));
+}
+
+.lfo-panel .knob-fill-arc {
+    stroke: var(--accent-purple);
+}
+
+.lfo-panel .knob-container.active .knob-body {
+    stroke: var(--accent-purple);
+}
+
+.lfo-panel .knob-container:hover .knob-svg {
+    filter: drop-shadow(0 2px 8px rgba(168, 85, 247, 0.3));
+}

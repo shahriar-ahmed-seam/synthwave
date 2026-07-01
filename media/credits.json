@@ -1,0 +1,35 @@
+{
+  "provider": "Unsplash",
+  "assets": [
+    {
+      "file": "hero.jpg",
+      "author": "Neeqolah Creative Works",
+      "authorUrl": "https://unsplash.com/@neeqolah?utm_source=synthwave&utm_medium=referral",
+      "source": "https://unsplash.com/photos/a-computer-generated-image-of-a-sun-setting-in-the-distance-Tn5gnXGI3hI?utm_source=synthwave&utm_medium=referral"
+    },
+    {
+      "file": "feature-synth.jpg",
+      "author": "Andrey Strizhkov",
+      "authorUrl": "https://unsplash.com/@andreystrizhkov?utm_source=synthwave&utm_medium=referral",
+      "source": "https://unsplash.com/photos/a-close-up-of-an-oven-with-a-light-shining-on-it-reKiGFuMDso?utm_source=synthwave&utm_medium=referral"
+    },
+    {
+      "file": "feature-scope.jpg",
+      "author": "Pawel Czerwinski",
+      "authorUrl": "https://unsplash.com/@pawel_czerwinski?utm_source=synthwave&utm_medium=referral",
+      "source": "https://unsplash.com/photos/a-black-background-with-a-blue-wave-of-light-eybM9n4yrpE?utm_source=synthwave&utm_medium=referral"
+    },
+    {
+      "file": "feature-keys.jpg",
+      "author": "GVZ 42",
+      "authorUrl": "https://unsplash.com/@gvz42?utm_source=synthwave&utm_medium=referral",
+      "source": "https://unsplash.com/photos/a-black-and-white-photo-of-a-keyboard-QQ6PWLVvPHQ?utm_source=synthwave&utm_medium=referral"
+    },
+    {
+      "file": "showcase.jpg",
+      "author": "Sarah Crego",
+      "authorUrl": "https://unsplash.com/@fromsarahtophotography?utm_source=synthwave&utm_medium=referral",
+      "source": "https://unsplash.com/photos/a-neon-sign-that-reads-studio-on-the-side-of-a-building-FaYZbfPeqVE?utm_source=synthwave&utm_medium=referral"
+    }
+  ]
+}
